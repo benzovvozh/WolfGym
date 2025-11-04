@@ -22,12 +22,6 @@ databaseChangeLog:
                     foreignKeyName: fk_wte_exercise
                     references: exercise(exercise_id)
                     deleteCascade: true
-              - column:
-                  name: exercise_order
-                  type: int
-                  constraints:
-                    nullable: false
-                    defaultValue: 0
 
         - addPrimaryKey:
             tableName: workout_template_exercise

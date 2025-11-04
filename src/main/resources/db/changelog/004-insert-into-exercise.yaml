@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-into-exercise
+      author: Vladimir Shumkov
+      comment: insert first person
+      changes:
+        - insert:
+            tableName: exercise
+            columns:
+              - column:
+                  name: name
+                  value: Жим лёжа
+              - column:
+                  name: description
+                  value: 4 подхода по 10 раз
+              - column:
+                  name: muscle_group
+                  value: CHEST
+              - column:
+                  name: video_url
+                  value: https://www.youtube.com/watch?v=Jb2bMaxqnXI
+              - column:
+                  name: created_at
+                  valueComputed: CURRENT_TIMESTAMP
+        - insert:
+            tableName: exercise
+            columns:
+              - column:
+                  name: name
+                  value: Жим Арнольда
+              - column:
+                  name: description
+                  value: Поднятие гантелей над головой
+              - column:
+                  name: muscle_group
+                  value: SHOULDERS
+              - column:
+                  name: video_url
+                  value: https://www.youtube.com/watch?v=DYh7wU0OjKg
+              - column:
+                  name: created_at
+                  valueComputed: CURRENT_TIMESTAMP
