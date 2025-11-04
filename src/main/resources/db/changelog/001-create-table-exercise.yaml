@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-exercise
+      author: Vladimir Shumkov
+      comment: first liquibase migration
+      changes:
+        - createTable:
+            tableName: exercise
+            columns:
+              - column:
+                  name: exercise_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_exercise
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: muscle_group
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: video_url
+                  type: varchar(500)
+              - column:
+                  name: created_at
+                  type: datetime
+                  constraints:
+                    nullable: false
