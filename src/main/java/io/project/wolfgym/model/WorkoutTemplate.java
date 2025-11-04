@@ -14,7 +14,7 @@ import java.util.List;
 Шаблон тренировки
  */
 @Entity
-@Table(name = "workout_temaplate")
+@Table(name = "workout_template")
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
@@ -34,7 +34,7 @@ public class WorkoutTemplate {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "workout_template_exercise",
             joinColumns = @JoinColumn(name = "workout_template_id"),
@@ -51,6 +51,7 @@ public class WorkoutTemplate {
         this.exercises.remove(exercise);
         exercise.getWorkoutTemplates().remove(this);
     }
+
 
 
 }

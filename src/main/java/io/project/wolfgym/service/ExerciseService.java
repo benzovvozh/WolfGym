@@ -5,20 +5,17 @@ import io.project.wolfgym.dto.exercise.ExerciseDTO;
 import io.project.wolfgym.mapper.ExerciseMapper;
 import io.project.wolfgym.model.Exercise;
 import io.project.wolfgym.repository.ExerciseRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ExerciseService {
 
-    private ExerciseMapper mapper;
-    private ExerciseRepository repository;
-
-    public ExerciseService(ExerciseMapper mapper, ExerciseRepository repository) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
+    private final ExerciseMapper mapper;
+    private final ExerciseRepository repository;
 
     public ExerciseDTO create(ExerciseCreateDTO createDTO) {
         Exercise exercise = mapper.map(createDTO);

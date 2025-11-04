@@ -1,6 +1,6 @@
 package io.project.wolfgym.dto.workoutTemplate;
 
-import io.project.wolfgym.model.Exercise;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +10,9 @@ import java.util.List;
 @Getter
 @Setter
 public class WorkoutTemplateCreateDTO {
+    @NotNull
     private String name;
     private String description;
-    private List<Exercise> exercises = new ArrayList<>();
+    @NotNull
+    private List<Long> exercisesIds = new ArrayList<>();
 }
