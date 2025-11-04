@@ -1,7 +1,9 @@
 package io.project.wolfgym.model;
 
 import lombok.Getter;
-
+/*
+Группы мышц
+ */
 @Getter
 public enum MuscleGroup {
     CHEST("Грудь"),

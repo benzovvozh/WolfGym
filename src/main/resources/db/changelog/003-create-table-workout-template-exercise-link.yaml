@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-create-workout-template-exercise-link
+      author: Vladimir Shumkov
+      changes:
+        - createTable:
+            tableName: workout_template_exercise
+            columns:
+              - column:
+                  name: workout_template_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_wte_workout_template
+                    references: workout_template(workout_template_id)
+                    deleteCascade: true
+              - column:
+                  name: exercise_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_wte_exercise
+                    references: exercise(exercise_id)
+                    deleteCascade: true
+              - column:
+                  name: exercise_order
+                  type: int
+                  constraints:
+                    nullable: false
+                    defaultValue: 0
+
+        - addPrimaryKey:
+            tableName: workout_template_exercise
+            columnNames: workout_template_id, exercise_id
+            constraintName: pk_workout_template_exercise
+
+        - createIndex:
+            tableName: workout_template_exercise
+            indexName: idx_wte_exercise_id
+            columns:
+              - column:
+                  name: exercise_id

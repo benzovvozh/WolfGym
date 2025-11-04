@@ -1,3 +1,7 @@
 databaseChangeLog:
   - include:
       file: db/changelog/001-create-table-exercise.yaml
+  - include:
+      file: db/changelog/002.create-table-workout-template.yaml
+  - include:
+      file: db/changelog/003-create-table-workout-template-exercise-link.yaml
