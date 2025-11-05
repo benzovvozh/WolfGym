@@ -113,8 +113,7 @@ class ExerciseControllerTest {
         when(exerciseService.show(1L)).thenReturn(exercise);
 
         //Then
-        mockMvc.perform(get("/api/exercises/1")
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/exercises/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Жим ногами"))
                 .andExpect(jsonPath("$.muscleGroup").value("LEGS"))
