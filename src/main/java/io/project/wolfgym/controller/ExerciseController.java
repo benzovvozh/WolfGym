@@ -3,6 +3,7 @@ package io.project.wolfgym.controller;
 import io.project.wolfgym.dto.exercise.ExerciseCreateDTO;
 import io.project.wolfgym.dto.exercise.ExerciseDTO;
 import io.project.wolfgym.service.ExerciseService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class ExerciseController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ExerciseDTO create(@RequestBody ExerciseCreateDTO exerciseCreateDTO) {
+    public ExerciseDTO create(@RequestBody @Valid ExerciseCreateDTO exerciseCreateDTO) {
         return service.create(exerciseCreateDTO);
     }
 
