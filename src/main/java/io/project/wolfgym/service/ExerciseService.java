@@ -31,4 +31,8 @@ public class ExerciseService {
     public List<ExerciseDTO> showAll() {
         return repository.findAll().stream().map(mapper::map).toList();
     }
+
+    public void destroy(Long id){
+        repository.deleteById(id);
+    }
 }

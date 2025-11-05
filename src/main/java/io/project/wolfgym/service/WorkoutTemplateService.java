@@ -46,4 +46,8 @@ public class WorkoutTemplateService {
     public List<WorkoutTemplateDTO> showAll() {
         return repository.findAll().stream().map(mapper::map).toList();
     }
+
+    public void destroy(Long id){
+        repository.deleteById(id);
+    }
 }
