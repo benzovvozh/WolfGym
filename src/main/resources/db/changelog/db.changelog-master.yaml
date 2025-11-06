@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/003-create-table-workout-template-exercise-link.yaml
   - include:
       file: db/changelog/004-insert-into-exercise.yaml
+  - include:
+      file: db/changelog/005-insert-into-workout-template.yaml

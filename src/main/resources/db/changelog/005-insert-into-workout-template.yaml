@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-into-workout-template
+      author: Vladimir Shumkov
+      changes:
+        - insert:
+            tableName: workout_template
+            columns:
+              - column:
+                  name: name
+                  value: Грудные мышцы
+              - column:
+                  name: description
+                  value: Тренировка грудной группы мышц
+              - column:
+                  name: created_at
+                  valueComputed: CURRENT_TIMESTAMP
+        - insert:
+            tableName: workout_template_exercise
+            columns:
+              - column:
+                  name: workout_template_id
+                  value: 1
+              - column:
+                  name: exercise_id
+                  value: 1
+        - insert:
+            tableName: workout_template
+            columns:
+              - column:
+                  name: name
+                  value: Плечи
+              - column:
+                  name: description
+                  value: Тренировка плеч
+              - column:
+                  name: created_at
+                  valueComputed: CURRENT_TIMESTAMP
+        - insert:
+            tableName: workout_template_exercise
+            columns:
+              - column:
+                  name: workout_template_id
+                  value: 2
+              - column:
+                  name: exercise_id
+                  value: 2
