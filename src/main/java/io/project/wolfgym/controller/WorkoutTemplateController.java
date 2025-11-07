@@ -1,5 +1,6 @@
 package io.project.wolfgym.controller;
 
+import io.project.wolfgym.customException.WorkoutTemplateNotFoundException;
 import io.project.wolfgym.dto.workoutTemplate.WorkoutTemplateCreateDTO;
 import io.project.wolfgym.dto.workoutTemplate.WorkoutTemplateDTO;
 import io.project.wolfgym.service.WorkoutTemplateService;
@@ -24,7 +25,7 @@ public class WorkoutTemplateController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public WorkoutTemplateDTO show(@PathVariable("id") Long id) {
+    public WorkoutTemplateDTO show(@PathVariable("id") Long id) throws WorkoutTemplateNotFoundException {
         return service.show(id);
     }
 

@@ -1,5 +1,6 @@
 package io.project.wolfgym.controller;
 
+import io.project.wolfgym.customException.ExerciseNotFoundException;
 import io.project.wolfgym.dto.exercise.ExerciseCreateDTO;
 import io.project.wolfgym.dto.exercise.ExerciseDTO;
 import io.project.wolfgym.service.ExerciseService;
@@ -26,7 +27,7 @@ public class ExerciseController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ExerciseDTO show(@PathVariable("id") Long id) {
+    public ExerciseDTO show(@PathVariable("id") Long id) throws ExerciseNotFoundException {
         return service.show(id);
     }
 

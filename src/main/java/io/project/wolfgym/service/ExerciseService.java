@@ -1,5 +1,6 @@
 package io.project.wolfgym.service;
 
+import io.project.wolfgym.customException.ExerciseNotFoundException;
 import io.project.wolfgym.dto.exercise.ExerciseCreateDTO;
 import io.project.wolfgym.dto.exercise.ExerciseDTO;
 import io.project.wolfgym.mapper.ExerciseMapper;
@@ -23,13 +24,15 @@ public class ExerciseService {
         return mapper.map(exercise);
     }
 
-    public ExerciseDTO show(Long id) {
-        var exercise = repository.findById(id).orElseThrow();
+    public ExerciseDTO show(Long id) throws ExerciseNotFoundException{
+        var exercise = repository.findById(id)
+                .orElseThrow(() -> new ExerciseNotFoundException("Exercise with id " + id + " not found"));
         return mapper.map(exercise);
     }
 
     public List<ExerciseDTO> showAll() {
-        return repository.findAll().stream().map(mapper::map).toList();
+        return repository.findAll().stream()
+                .map(mapper::map).toList();
     }
 
     public void destroy(Long id){

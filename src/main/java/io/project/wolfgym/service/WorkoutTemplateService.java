@@ -1,5 +1,6 @@
 package io.project.wolfgym.service;
 
+import io.project.wolfgym.customException.WorkoutTemplateNotFoundException;
 import io.project.wolfgym.dto.workoutTemplate.WorkoutTemplateCreateDTO;
 import io.project.wolfgym.dto.workoutTemplate.WorkoutTemplateDTO;
 import io.project.wolfgym.mapper.WorkoutTemplateMapper;
@@ -33,13 +34,13 @@ public class WorkoutTemplateService {
             exercises.forEach(workoutTemplate::addExercise); // Это установит двустороннюю связь
         }
 
-
         WorkoutTemplate saved = repository.save(workoutTemplate);
         return mapper.map(saved);
     }
 
-    public WorkoutTemplateDTO show(Long id) {
-        var workoutTemplate = repository.findById(id).orElseThrow();
+    public WorkoutTemplateDTO show(Long id) throws WorkoutTemplateNotFoundException{
+        var workoutTemplate = repository.findById(id)
+                .orElseThrow(() -> new WorkoutTemplateNotFoundException("Workout template not found"));
         return mapper.map(workoutTemplate);
     }
 
