@@ -108,8 +108,8 @@ class WorkoutTemplateControllerIntegrationTest {
     void deleteWorkoutTemplate_ReturnsNoContent() throws Exception {
         mockMvc.perform(delete("/api/workout-templates/1"))
                 .andExpect(status().isNoContent());
-//        mockMvc.perform(get("/api/workout-templates/1"))
-//                .andExpect(status().isNotFound());
+        mockMvc.perform(get("/api/workout-templates/1"))
+                .andExpect(status().isNotFound());
     }
 
 }

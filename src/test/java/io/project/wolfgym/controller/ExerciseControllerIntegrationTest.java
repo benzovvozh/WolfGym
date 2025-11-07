@@ -101,8 +101,8 @@ class ExerciseControllerIntegrationTest {
     void deleteExercise_ReturnsNoContent() throws Exception {
         mockMvc.perform(delete("/api/exercises/1"))
                 .andExpect(status().isNoContent());
-//        mockMvc.perform(get("/api/exercises/1"))
-//                .andExpect(status().isNotFound());
+        mockMvc.perform(get("/api/exercises/1"))
+                .andExpect(status().isNotFound());
     }
 
 }
