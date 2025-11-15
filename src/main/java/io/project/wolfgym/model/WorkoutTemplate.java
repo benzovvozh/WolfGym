@@ -34,6 +34,8 @@ public class WorkoutTemplate {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    private String createdBy;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "workout_template_exercise",
@@ -41,6 +43,9 @@ public class WorkoutTemplate {
             inverseJoinColumns = @JoinColumn(name = "exercise_id")
     )
     private List<Exercise> exercises = new ArrayList<>();
+    // Связь с сессиями
+    @OneToMany(mappedBy = "template")
+    private List<WorkoutSession> sessions = new ArrayList<>();
 
     public void addExercise(Exercise exercise) {
         this.exercises.add(exercise);

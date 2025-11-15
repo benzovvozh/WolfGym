@@ -37,6 +37,8 @@ public class Exercise {
     @Column(name = "video_url", length = 500)
     private String videoUrl;
 
+    private String createdBy;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

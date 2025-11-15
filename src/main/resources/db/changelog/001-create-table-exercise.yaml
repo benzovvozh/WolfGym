@@ -32,5 +32,8 @@ databaseChangeLog:
                   name: video_url
                   type: varchar(500)
               - column:
+                  name: created_by
+                  type: VARCHAR(255)
+              - column:
                   name: created_at
                   type: datetime

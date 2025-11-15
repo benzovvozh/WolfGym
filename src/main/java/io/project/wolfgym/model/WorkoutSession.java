@@ -6,10 +6,15 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    Тренировка
+ */
 @Entity
 @Table(name = "workout_session")
 @Getter
@@ -25,6 +30,8 @@ public class WorkoutSession {
     @JoinColumn(name = "workout_template_id")
     private WorkoutTemplate template;
 
+    private String createdBy;
+
     @CreatedDate
     @NotNull
     private LocalDateTime startTime;
@@ -33,10 +40,19 @@ public class WorkoutSession {
 
     private Integer duration; // Длительность тренировки
 
-    private String userId;
     // Связь с подходами
     @OneToMany(mappedBy = "workoutSession", cascade = CascadeType.ALL)
     private List<WorkoutSet> sets = new ArrayList<>();
+
+    public void addSets(WorkoutSet set) {
+        this.sets.add(set);
+    }
+    public Integer getCalculatedDuration() {
+        if (startTime == null || endTime == null) {
+            return null;
+        }
+        return (int) Duration.between(startTime, endTime).toMinutes();
+    }
 
     /*
     1. создать сразу: старт и енд устанавливаются как now(),

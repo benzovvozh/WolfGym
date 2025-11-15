@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-workout_sets
+      author: your-name
+      changes:
+        - createTable:
+            tableName: workout_sets
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: workout_session_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_workout_sets_session
+                    referencedTableName: workout_session
+                    referencedColumnNames: id
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: exercise_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_workout_sets_exercise
+                    referencedTableName: exercise
+                    referencedColumnNames: exercise_id
+              - column:
+                  name: weight
+                  type: DOUBLE
+                  constraints:
+                    nullable: true
+              - column:
+                  name: reps
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: set_number
+                  type: INTEGER
+                  constraints:
+                    nullable: false

@@ -23,6 +23,9 @@ databaseChangeLog:
                   name: description
                   type: text
               - column:
+                  name: created_by
+                  type: VARCHAR(255)
+              - column:
                   name: created_at
                   type: timestamp
                   defaultValueComputed: CURRENT_TIMESTAMP

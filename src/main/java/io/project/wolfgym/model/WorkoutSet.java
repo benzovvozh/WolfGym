@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+/*
+    Подход упражнения
+ */
 @Entity
 @Table(name = "workout_sets")
 @Getter
@@ -21,6 +25,8 @@ public class WorkoutSet {
     @ManyToOne
     @JoinColumn(name = "workout_session_id")
     private WorkoutSession workoutSession;
+
+    private String createdBy;
 
     @ManyToOne
     @JoinColumn(name = "exercise_id")

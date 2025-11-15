@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-workout_sessions
+      author: Vladimir Shumkov
+      comment:
+      changes:
+        - createTable:
+            tableName: workout_session
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_workout_session
+                    nullable: false
+              - column:
+                  name: workout_template_id
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+                    foreignKeyName: fk_workout_session_template
+                    referencedTableName: workout_template
+                    referencedColumnNames: workout_template_id
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_time
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_time
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: true
+              - column:
+                  name: duration
+                  type: INTEGER
+                  constraints:
+                    nullable: true
