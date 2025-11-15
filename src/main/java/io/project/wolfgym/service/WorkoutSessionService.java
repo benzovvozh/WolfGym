@@ -41,11 +41,13 @@ public class WorkoutSessionService {
     }
 
     public WorkoutSessionDTO update(WorkoutSessionUpdateDTO updateDTO) {
-        var result = sessionMapper.update(updateDTO);
-        repository.save(result);
-        return sessionMapper.map(result);
+        var session = repository.findById(updateDTO.getId()).orElseThrow();
+        sessionMapper.update(session, updateDTO);
+        repository.save(session);
+        return sessionMapper.map(session);
     }
-    public WorkoutSessionDTO endSession(Long id){
+
+    public WorkoutSessionDTO endSession(Long id) {
         var session = repository.findById(id).orElseThrow();
         var now = LocalDateTime.now();
         session.setEndTime(now);

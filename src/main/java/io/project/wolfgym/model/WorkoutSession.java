@@ -47,6 +47,7 @@ public class WorkoutSession {
     public void addSets(WorkoutSet set) {
         this.sets.add(set);
     }
+
     public Integer getCalculatedDuration() {
         if (startTime == null || endTime == null) {
             return null;
@@ -54,9 +55,4 @@ public class WorkoutSession {
         return (int) Duration.between(startTime, endTime).toMinutes();
     }
 
-    /*
-    1. создать сразу: старт и енд устанавливаются как now(),
-        id, WT, userID тоже сразу
-        после нажатия на последнюю кнопку - обновлять endTime + duration
-     */
 }

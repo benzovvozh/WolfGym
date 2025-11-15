@@ -8,5 +8,6 @@ import java.util.List;
 @Getter
 @Setter
 public class WorkoutSessionUpdateDTO {
+    private Long id;
     private List<Long> setsId;
 }
