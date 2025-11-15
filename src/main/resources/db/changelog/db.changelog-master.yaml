@@ -13,5 +13,5 @@ databaseChangeLog:
       file: db/changelog/006-create-table-workout_sessions.yaml
   - include:
       file: db/changelog/007-create-table-workout_sets.yaml
-#  - include:
-#      file: db/changelog/008-insert-test-workout_sessions.yaml
+  - include:
+      file: db/changelog/008-insert-test-workout_sessions.yaml

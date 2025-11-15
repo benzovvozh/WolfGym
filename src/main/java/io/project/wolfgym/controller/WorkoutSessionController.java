@@ -1,5 +1,6 @@
 package io.project.wolfgym.controller;
 
+import io.project.wolfgym.customException.WorkoutSessionNotFoundException;
 import io.project.wolfgym.dto.workoutSession.WorkoutSessionCreateDTO;
 import io.project.wolfgym.dto.workoutSession.WorkoutSessionDTO;
 import io.project.wolfgym.dto.workoutSession.WorkoutSessionUpdateDTO;
@@ -25,7 +26,7 @@ public class WorkoutSessionController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public WorkoutSessionDTO show(@PathVariable("id") Long id) {
+    public WorkoutSessionDTO show(@PathVariable("id") Long id) throws WorkoutSessionNotFoundException{
         return service.show(id);
     }
 
@@ -43,13 +44,14 @@ public class WorkoutSessionController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public WorkoutSessionDTO update(@RequestBody @Valid WorkoutSessionUpdateDTO updateDTO) {
+    public WorkoutSessionDTO update(@RequestBody @Valid WorkoutSessionUpdateDTO updateDTO)
+            throws WorkoutSessionNotFoundException{
         return service.update(updateDTO);
     }
 
     @PatchMapping("/{id}/endSession")
     @ResponseStatus(HttpStatus.OK)
-    public WorkoutSessionDTO endSession(@PathVariable("id") Long id) {
+    public WorkoutSessionDTO endSession(@PathVariable("id") Long id) throws WorkoutSessionNotFoundException {
         return service.endSession(id);
     }
 

@@ -1,6 +1,7 @@
 package io.project.wolfgym.service;
 
 
+import io.project.wolfgym.customException.WorkoutSessionNotFoundException;
 import io.project.wolfgym.dto.workoutSession.WorkoutSessionCreateDTO;
 import io.project.wolfgym.dto.workoutSession.WorkoutSessionDTO;
 import io.project.wolfgym.dto.workoutSession.WorkoutSessionUpdateDTO;
@@ -25,8 +26,9 @@ public class WorkoutSessionService {
         return sessionMapper.map(result);
     }
 
-    public WorkoutSessionDTO show(Long id) {
-        var result = repository.findById(id).orElseThrow();
+    public WorkoutSessionDTO show(Long id) throws WorkoutSessionNotFoundException{
+        var result = repository.findById(id).orElseThrow(() ->
+                new WorkoutSessionNotFoundException("Session with id " + id + " not found"));
         return sessionMapper.map(result);
     }
 
@@ -40,15 +42,18 @@ public class WorkoutSessionService {
         repository.deleteById(id);
     }
 
-    public WorkoutSessionDTO update(WorkoutSessionUpdateDTO updateDTO) {
-        var session = repository.findById(updateDTO.getId()).orElseThrow();
+    public WorkoutSessionDTO update(WorkoutSessionUpdateDTO updateDTO) throws WorkoutSessionNotFoundException {
+        var session = repository.findById(updateDTO.getId())
+                .orElseThrow(() ->
+                        new WorkoutSessionNotFoundException("Session with  " + updateDTO.getId() + " not found"));
         sessionMapper.update(session, updateDTO);
         repository.save(session);
         return sessionMapper.map(session);
     }
 
-    public WorkoutSessionDTO endSession(Long id) {
-        var session = repository.findById(id).orElseThrow();
+    public WorkoutSessionDTO endSession(Long id) throws WorkoutSessionNotFoundException{
+        var session = repository.findById(id).orElseThrow(() ->
+                new WorkoutSessionNotFoundException("Session with id " + id + " not found"));
         var now = LocalDateTime.now();
         session.setEndTime(now);
         Duration duration = Duration.between(session.getStartTime(), now);
