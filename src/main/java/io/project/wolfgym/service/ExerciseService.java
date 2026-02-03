@@ -5,8 +5,12 @@ import io.project.wolfgym.dto.exercise.ExerciseCreateDTO;
 import io.project.wolfgym.dto.exercise.ExerciseDTO;
 import io.project.wolfgym.mapper.ExerciseMapper;
 import io.project.wolfgym.model.Exercise;
+import io.project.wolfgym.model.MuscleGroup;
 import io.project.wolfgym.repository.ExerciseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +37,33 @@ public class ExerciseService {
     public List<ExerciseDTO> showAll() {
         return repository.findAll().stream()
                 .map(mapper::map).toList();
+    }
+
+    // Простой поиск по группе мышц
+    public List<ExerciseDTO> getExercisesByMuscleGroup(String muscleGroup) {
+        var enumMuscleGroup = MuscleGroup.valueOf(muscleGroup);
+        // Вызываем репозиторий для поиска по группе мышц
+        List<Exercise> exercises = repository.findByMuscleGroup(enumMuscleGroup);
+        // Преобразуем Entity в DTO
+        return exercises.stream()
+                .map(mapper::map)
+                .toList();
+    }
+
+    // Поиск с пагинацией
+    public List<ExerciseDTO> getExercisesByMuscleGroup(String muscleGroup, int page, int size) {
+        // Создаем объект пагинации
+        Pageable pageable = PageRequest.of(page, size, Sort.by("name"));
+        // Вызываем репозиторий с пагинацией
+        var enumMuscleGroup = MuscleGroup.valueOf(muscleGroup);
+        List<Exercise> exercises = repository.findByMuscleGroup(enumMuscleGroup, pageable);
+        return exercises.stream()
+                .map(mapper::map)
+                .toList();
+    }
+    public ExerciseDTO getExerciseByName(String name){
+        var exercise = repository.findByName(name);
+        return mapper.map(exercise);
     }
 
     public void destroy(Long id){

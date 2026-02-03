@@ -51,4 +51,8 @@ public class WorkoutTemplateService {
     public void destroy(Long id){
         repository.deleteById(id);
     }
+    public WorkoutTemplateDTO getTemplateByName(String name){
+        var template = repository.findByName(name);
+        return mapper.map(template);
+    }
 }

@@ -2,7 +2,6 @@ package io.project.wolfgym.controller;
 
 import io.project.wolfgym.dto.workoutSet.WorkoutSetCreateDTO;
 import io.project.wolfgym.dto.workoutSet.WorkoutSetDTO;
-import io.project.wolfgym.model.WorkoutSet;
 import io.project.wolfgym.service.WorkoutSetService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

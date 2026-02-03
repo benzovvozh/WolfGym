@@ -40,4 +40,9 @@ public class WorkoutTemplateController {
     public List<WorkoutTemplateDTO> showAll() {
         return service.showAll();
     }
+
+    @GetMapping("/search")
+    public WorkoutTemplateDTO getTemplateByName(@RequestParam(required = false) String name){
+        return service.getTemplateByName(name);
+    }
 }

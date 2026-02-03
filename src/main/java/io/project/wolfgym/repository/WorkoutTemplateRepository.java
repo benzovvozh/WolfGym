@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorkoutTemplateRepository extends JpaRepository<WorkoutTemplate, Long>,
         JpaSpecificationExecutor<WorkoutTemplate> {
+    WorkoutTemplate findByName(String name);
 }
