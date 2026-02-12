@@ -61,6 +61,11 @@ public class ExerciseService {
                 .map(mapper::map)
                 .toList();
     }
+    public List<ExerciseDTO> getExercisesByCreatedBy(String userId) {
+        return repository.findByCreatedBy(userId).stream()
+                .map(mapper::map)
+                .toList();
+    }
     public ExerciseDTO getExerciseByName(String name){
         var exercise = repository.findByName(name);
         return mapper.map(exercise);

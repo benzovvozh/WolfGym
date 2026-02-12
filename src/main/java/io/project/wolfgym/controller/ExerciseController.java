@@ -47,12 +47,17 @@ public class ExerciseController {
     @GetMapping
     public ResponseEntity<List<ExerciseDTO>> getExercises(
             @RequestParam(required = false) String muscleGroup,
+            @RequestParam(required = false) String createdBy,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
 
         // Если указана группа мышц - ищем по группе
         if (muscleGroup != null && !muscleGroup.isEmpty()) {
             List<ExerciseDTO> exercises = service.getExercisesByMuscleGroup(muscleGroup, page, size);
+            return ResponseEntity.ok(exercises);
+        }
+        if (createdBy != null && !createdBy.isEmpty()){
+            List<ExerciseDTO> exercises = service.getExercisesByCreatedBy(createdBy);
             return ResponseEntity.ok(exercises);
         }
 

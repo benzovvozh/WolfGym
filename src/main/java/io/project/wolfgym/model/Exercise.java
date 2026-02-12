@@ -36,7 +36,7 @@ public class Exercise {
 
     @Column(name = "video_url", length = 500)
     private String videoUrl;
-
+    @Column(name = "created_by")
     private String createdBy;
 
     @CreatedDate

@@ -18,4 +18,6 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long>, JpaSp
     List<Exercise> findByMuscleGroup(MuscleGroup muscleGroup, Pageable pageable);
 
     Exercise findByName(String name);
+
+    List<Exercise> findByCreatedBy(String createdBy);
 }

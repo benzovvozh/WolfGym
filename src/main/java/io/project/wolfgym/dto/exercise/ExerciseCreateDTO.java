@@ -14,4 +14,5 @@ public class ExerciseCreateDTO {
     @NotNull
     private MuscleGroup muscleGroup;
     private String videoUrl;
+    private String createdBy;
 }

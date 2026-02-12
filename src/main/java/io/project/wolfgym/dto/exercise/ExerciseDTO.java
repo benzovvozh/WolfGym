@@ -13,4 +13,5 @@ public class ExerciseDTO {
     private MuscleGroup muscleGroup;
     private String videoUrl;
     private LocalDateTime createdAt;
+    private String createdBy;
 }

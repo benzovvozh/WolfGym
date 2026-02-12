@@ -3,8 +3,6 @@ import org.mapstruct.*;
 import io.project.wolfgym.dto.exercise.ExerciseCreateDTO;
 import io.project.wolfgym.dto.exercise.ExerciseDTO;
 import io.project.wolfgym.model.Exercise;
-import org.springframework.stereotype.Component;
-
 
 @Mapper(
         uses = {JsonNullableMapper.class, ReferenceMapper.class},
