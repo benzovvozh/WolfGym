@@ -7,9 +7,6 @@ databaseChangeLog:
             tableName: workout_session
             columns:
               - column:
-                  name: id
-                  value: 1
-              - column:
                   name: workout_template_id
                   value: 1
               - column:

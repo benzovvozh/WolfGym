@@ -1,5 +1,6 @@
 package io.project.wolfgym.controller;
 
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -99,9 +100,24 @@ class ExerciseControllerIntegrationTest {
 
     @Test
     void deleteExercise_ReturnsNoContent() throws Exception {
-        mockMvc.perform(delete("/api/exercises/1"))
+        String newExercise = """
+                {
+                  "name": "Упражнение для удаления",
+                  "description": "Это упражнение будет удалено",
+                  "muscleGroup": "CHEST"
+                }""";
+        String response = mockMvc.perform(post("/api/exercises")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newExercise))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        Long exerciseId = JsonPath.parse(response).read("$.id", Long.class);
+
+        mockMvc.perform(delete("/api/exercises/" + exerciseId))
                 .andExpect(status().isNoContent());
-        mockMvc.perform(get("/api/exercises/1"))
+        mockMvc.perform(get("/api/exercises/" + exerciseId))
                 .andExpect(status().isNotFound());
     }
 

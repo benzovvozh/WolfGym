@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -36,11 +35,14 @@ class WorkoutSessionControllerIntegrationTest {
     private final static String BASE_URL = "/api/sessions";
 
     @Test
+    @DirtiesContext
     void createWorkoutSession_WithValidData_ReturnsOk() throws Exception {
         mockMvc.perform(post(BASE_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(validSession))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.id").value(2))
                 .andExpect(jsonPath("$.createdBy").value("Admin"))
                 .andExpect(jsonPath("$.template.name").value("Грудные мышцы"))

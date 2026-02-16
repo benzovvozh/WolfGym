@@ -1,5 +1,6 @@
 package io.project.wolfgym.controller;
 
+import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -106,9 +107,24 @@ class WorkoutTemplateControllerIntegrationTest {
     @Test
     @Order(5)
     void deleteWorkoutTemplate_ReturnsNoContent() throws Exception {
-        mockMvc.perform(delete("/api/workout-templates/1"))
+        String newWT = """
+                {
+                  "name": "Для удаления",
+                  "description": "Будет удалено",
+                  "exercisesIds": [1, 2]
+                }
+                """;
+        var response = mockMvc.perform(post("/api/workout-templates")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(newWT))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        Long templateId = JsonPath.parse(response).read("$.workoutTemplateId", Long.class);
+        mockMvc.perform(delete("/api/workout-templates/" + templateId))
                 .andExpect(status().isNoContent());
-        mockMvc.perform(get("/api/workout-templates/1"))
+        mockMvc.perform(get("/api/workout-templates/" + templateId))
                 .andExpect(status().isNotFound());
     }
 
