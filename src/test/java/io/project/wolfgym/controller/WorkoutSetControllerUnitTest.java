@@ -1,12 +1,12 @@
 package io.project.wolfgym.controller;
 
+import io.project.wolfgym.customException.ExerciseNotFoundException;
+import io.project.wolfgym.customException.WorkoutSessionNotFoundException;
 import io.project.wolfgym.dto.workoutSet.WorkoutSetCreateDTO;
 import io.project.wolfgym.dto.workoutSet.WorkoutSetDTO;
-import io.project.wolfgym.model.WorkoutSet;
 import io.project.wolfgym.service.WorkoutSetService;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -67,6 +67,27 @@ class WorkoutSetControllerUnitTest {
         assertEquals(result.getWeight(), setDTO.getWeight());
         assertEquals(result.getExerciseId(), setDTO.getExerciseId());
 
+        verify(service).createWorkoutSet(setCreateDTO);
+    }
+
+    @SneakyThrows
+    @Test
+    void handleCreateNewSet_WithInvalidExerciseId_ThrowsException() {
+        setCreateDTO.setExerciseId(1000L);
+        when(service.createWorkoutSet(setCreateDTO))
+                .thenThrow(new ExerciseNotFoundException("Exercise not found with id: 1000"));
+        assertThrows(ExerciseNotFoundException.class, () -> controller.create(setCreateDTO));
+
+        verify(service).createWorkoutSet(setCreateDTO);
+    }
+
+    @SneakyThrows
+    @Test
+    void handleCreateNewSet_WithInvalidSessionId_ThrowsException    () {
+        setCreateDTO.setWorkoutSessionId(1000L);
+        when(service.createWorkoutSet(setCreateDTO))
+                .thenThrow(new WorkoutSessionNotFoundException("Session not found with id: 1000"));
+        assertThrows(WorkoutSessionNotFoundException.class, () -> controller.create(setCreateDTO));
         verify(service).createWorkoutSet(setCreateDTO);
     }
 

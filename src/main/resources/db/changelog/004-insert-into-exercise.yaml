@@ -22,6 +22,9 @@ databaseChangeLog:
               - column:
                   name: created_at
                   valueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: created_by
+                  value: 897007363
         - insert:
             tableName: exercise
             columns:
@@ -40,3 +43,6 @@ databaseChangeLog:
               - column:
                   name: created_at
                   valueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: created_by
+                  value: 897007363
