@@ -1,5 +1,7 @@
 package io.project.wolfgym.service;
 
+import io.project.wolfgym.customException.ExerciseNotFoundException;
+import io.project.wolfgym.customException.WorkoutSessionNotFoundException;
 import io.project.wolfgym.dto.workoutSet.WorkoutSetCreateDTO;
 import io.project.wolfgym.dto.workoutSet.WorkoutSetDTO;
 import io.project.wolfgym.mapper.WorkoutSetMapper;
@@ -20,11 +22,21 @@ public class WorkoutSetService {
     private final ExerciseRepository exerciseRepository;
     private final WorkoutSetMapper workoutSetMapper;
 
-    public WorkoutSetDTO createWorkoutSet(WorkoutSetCreateDTO createDTO) {
+    public WorkoutSetDTO createWorkoutSet(WorkoutSetCreateDTO createDTO) throws WorkoutSessionNotFoundException,
+            ExerciseNotFoundException {
 
         WorkoutSet workoutSet = workoutSetMapper.toEntity(createDTO);
-        workoutSet.setWorkoutSession(workoutSessionRepository.getReferenceById(createDTO.getWorkoutSessionId()));
-        workoutSet.setExercise(exerciseRepository.getReferenceById(createDTO.getExerciseId()));
+
+        var session = workoutSessionRepository.findById(createDTO.getWorkoutSessionId())
+                .orElseThrow(() -> new WorkoutSessionNotFoundException(
+                        "Session not found with id: " + createDTO.getWorkoutSessionId()));
+        workoutSet.setWorkoutSession(session);
+
+        var exercise = exerciseRepository.findById(createDTO.getExerciseId())
+                .orElseThrow(() -> new ExerciseNotFoundException(
+                        "Exercise not found with id: " + createDTO.getExerciseId()
+                ));
+        workoutSet.setExercise(exercise);
 
         WorkoutSet saved = workoutSetRepository.save(workoutSet);
         return workoutSetMapper.toDTO(saved);

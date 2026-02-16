@@ -4,6 +4,7 @@ import io.project.wolfgym.dto.workoutSet.WorkoutSetCreateDTO;
 import io.project.wolfgym.dto.workoutSet.WorkoutSetDTO;
 import io.project.wolfgym.model.WorkoutSet;
 import io.project.wolfgym.service.WorkoutSetService;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
@@ -52,6 +53,7 @@ class WorkoutSetControllerUnitTest {
         setCreateDTO.setWorkoutSessionId(BASE_WS_ID);
     }
 
+    @SneakyThrows
     @Test
     void handleCreateNewSet_ReturnOk() {
         //given
