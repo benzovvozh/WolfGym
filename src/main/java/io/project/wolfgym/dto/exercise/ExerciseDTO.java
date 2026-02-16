@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ExerciseDTO {
+    private Long id;
     private String name;
     private String description;
     private MuscleGroup muscleGroup;

@@ -11,13 +11,13 @@ import java.util.List;
 
 @Repository
 public interface ExerciseRepository extends JpaRepository<Exercise, Long>, JpaSpecificationExecutor<Exercise> {
-    // Простой метод для поиска по группе мышц
-    List<Exercise> findByMuscleGroup(MuscleGroup muscleGroup);
 
     // Более гибкий метод с пагинацией
     List<Exercise> findByMuscleGroup(MuscleGroup muscleGroup, Pageable pageable);
 
-    Exercise findByName(String name);
+    Exercise findByNameIgnoreCase(String name);
+
+    List<Exercise> findExercisesByNameContainsIgnoreCase(String name);
 
     List<Exercise> findByCreatedBy(String createdBy);
 }

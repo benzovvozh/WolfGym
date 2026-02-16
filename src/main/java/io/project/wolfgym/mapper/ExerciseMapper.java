@@ -11,7 +11,6 @@ import io.project.wolfgym.model.Exercise;
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public abstract class ExerciseMapper {
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "workoutTemplates", ignore = true)
     public abstract Exercise map(ExerciseCreateDTO exerciseCreateDTO);

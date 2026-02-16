@@ -39,17 +39,6 @@ public class ExerciseService {
                 .map(mapper::map).toList();
     }
 
-    // Простой поиск по группе мышц
-    public List<ExerciseDTO> getExercisesByMuscleGroup(String muscleGroup) {
-        var enumMuscleGroup = MuscleGroup.valueOf(muscleGroup);
-        // Вызываем репозиторий для поиска по группе мышц
-        List<Exercise> exercises = repository.findByMuscleGroup(enumMuscleGroup);
-        // Преобразуем Entity в DTO
-        return exercises.stream()
-                .map(mapper::map)
-                .toList();
-    }
-
     // Поиск с пагинацией
     public List<ExerciseDTO> getExercisesByMuscleGroup(String muscleGroup, int page, int size) {
         // Создаем объект пагинации
@@ -67,8 +56,14 @@ public class ExerciseService {
                 .toList();
     }
     public ExerciseDTO getExerciseByName(String name){
-        var exercise = repository.findByName(name);
+        var exercise = repository.findByNameIgnoreCase(name);
         return mapper.map(exercise);
+    }
+    public List<ExerciseDTO> getExerciseByNameContains(String name){
+        return repository.findExercisesByNameContainsIgnoreCase(name)
+                .stream()
+                .map(mapper::map)
+                .toList();
     }
 
     public void destroy(Long id){
