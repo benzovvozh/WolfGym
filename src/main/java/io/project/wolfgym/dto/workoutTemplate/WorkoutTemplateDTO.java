@@ -15,4 +15,5 @@ public class WorkoutTemplateDTO {
     private String description;
     private LocalDateTime createdAt;
     private List<ExerciseDTO> exercises;
+    private String userId;
 }

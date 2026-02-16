@@ -34,6 +34,7 @@ public class WorkoutTemplate {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "created_by")
     private String createdBy;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -44,6 +45,7 @@ public class WorkoutTemplate {
     )
     private List<Exercise> exercises = new ArrayList<>();
     // Связь с сессиями
+    // список сессий по этой тренировке
     @OneToMany(mappedBy = "template")
     private List<WorkoutSession> sessions = new ArrayList<>();
 

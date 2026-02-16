@@ -15,4 +15,5 @@ public class WorkoutTemplateCreateDTO {
     private String description;
     @NotNull
     private List<Long> exercisesIds = new ArrayList<>();
+    private String userId;
 }
