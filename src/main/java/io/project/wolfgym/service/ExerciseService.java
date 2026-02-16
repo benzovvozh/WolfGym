@@ -28,7 +28,7 @@ public class ExerciseService {
         return mapper.map(exercise);
     }
 
-    public ExerciseDTO show(Long id) throws ExerciseNotFoundException{
+    public ExerciseDTO show(Long id) throws ExerciseNotFoundException {
         var exercise = repository.findById(id)
                 .orElseThrow(() -> new ExerciseNotFoundException("Exercise with id " + id + " not found"));
         return mapper.map(exercise);
@@ -50,23 +50,27 @@ public class ExerciseService {
                 .map(mapper::map)
                 .toList();
     }
+
     public List<ExerciseDTO> getExercisesByCreatedBy(String userId) {
         return repository.findByCreatedBy(userId).stream()
                 .map(mapper::map)
                 .toList();
     }
-    public ExerciseDTO getExerciseByName(String name){
-        var exercise = repository.findByNameIgnoreCase(name);
+
+    public ExerciseDTO getExerciseByName(String name) throws ExerciseNotFoundException {
+        var exercise = repository.findByNameIgnoreCase(name)
+                .orElseThrow(() -> new ExerciseNotFoundException("Exercise not found by name: " + name));
         return mapper.map(exercise);
     }
-    public List<ExerciseDTO> getExerciseByNameContains(String name){
+
+    public List<ExerciseDTO> getExerciseByNameContains(String name) {
         return repository.findExercisesByNameContainsIgnoreCase(name)
                 .stream()
                 .map(mapper::map)
                 .toList();
     }
 
-    public void destroy(Long id){
+    public void destroy(Long id) {
         repository.deleteById(id);
     }
 }

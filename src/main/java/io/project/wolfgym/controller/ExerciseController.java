@@ -66,7 +66,7 @@ public class ExerciseController {
         return ResponseEntity.ok(allExercises);
     }
     @GetMapping("/search")
-    public ExerciseDTO getExerciseByName(@RequestParam(required = false) String name){
+    public ExerciseDTO getExerciseByName(@RequestParam(required = false) String name) throws ExerciseNotFoundException {
         return service.getExerciseByName(name);
     }
 

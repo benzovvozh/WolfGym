@@ -42,7 +42,8 @@ public class WorkoutTemplateController {
     }
 
     @GetMapping("/search")
-    public WorkoutTemplateDTO getTemplateByName(@RequestParam(required = false) String name){
+    public WorkoutTemplateDTO getTemplateByName(@RequestParam(required = false) String name)
+            throws WorkoutTemplateNotFoundException {
         return service.getTemplateByName(name);
     }
 }

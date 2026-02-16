@@ -5,6 +5,7 @@ import io.project.wolfgym.dto.exercise.ExerciseCreateDTO;
 import io.project.wolfgym.dto.exercise.ExerciseDTO;
 import io.project.wolfgym.model.MuscleGroup;
 import io.project.wolfgym.service.ExerciseService;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -102,13 +103,33 @@ class ExerciseControllerUnitTest {
 //    }
 
     @Test
-    void handleGetExerciseById_ReturnsNotFound() throws ExerciseNotFoundException{
+    void handleGetExerciseById_ReturnsNotFound() throws ExerciseNotFoundException {
         //given
         when(service.show(1L)).thenThrow(new ExerciseNotFoundException("Exercise not found"));
         //when then
         assertThrows(ExerciseNotFoundException.class, () -> controller.show(1L));
 
         verify(service).show(1L);
+    }
+
+    @SneakyThrows
+    @Test
+    void handleGetExerciseByName_ReturnsOk() {
+        when(service.getExerciseByName(EX_NAME)).thenReturn(exerciseDTO);
+
+        var result = controller.getExerciseByName("Жим ногами");
+
+        assertEquals(EX_NAME, result.getName());
+        verify(service).getExerciseByName(EX_NAME);
+    }
+
+    @SneakyThrows
+    @Test
+    void handleGetExerciseByName_ThrowsException() {
+        when(service.getExerciseByName("Становая тяга"))
+                .thenThrow(new ExerciseNotFoundException("Exercise not found by name: Становая тяга"));
+        assertThrows(ExerciseNotFoundException.class, () -> controller.getExerciseByName("Становая тяга"));
+        verify(service).getExerciseByName("Становая тяга");
     }
 
 

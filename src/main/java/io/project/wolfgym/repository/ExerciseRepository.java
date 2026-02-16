@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ExerciseRepository extends JpaRepository<Exercise, Long>, JpaSpecificationExecutor<Exercise> {
@@ -15,7 +16,7 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Long>, JpaSp
     // Более гибкий метод с пагинацией
     List<Exercise> findByMuscleGroup(MuscleGroup muscleGroup, Pageable pageable);
 
-    Exercise findByNameIgnoreCase(String name);
+    Optional<Exercise> findByNameIgnoreCase(String name);
 
     List<Exercise> findExercisesByNameContainsIgnoreCase(String name);
 

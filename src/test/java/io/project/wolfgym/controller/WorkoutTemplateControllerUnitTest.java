@@ -7,6 +7,7 @@ import io.project.wolfgym.dto.workoutTemplate.WorkoutTemplateCreateDTO;
 import io.project.wolfgym.dto.workoutTemplate.WorkoutTemplateDTO;
 import io.project.wolfgym.model.MuscleGroup;
 import io.project.wolfgym.service.WorkoutTemplateService;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -138,6 +139,30 @@ class WorkoutTemplateControllerUnitTest {
         assertEquals(result.get(1).getDescription(), workoutTemplateDTO2.getDescription());
 
         verify(service).showAll();
+    }
+
+    @Test
+    @SneakyThrows
+    void handleGetWTByName_ReturnsOk() {
+        //given
+        when(service.getTemplateByName(WT_NAME)).thenReturn(workoutTemplateDTO);
+        //when
+        var result = controller.getTemplateByName("Грудь");
+        //then
+        assertEquals(WT_NAME, result.getName());
+        verify(service).getTemplateByName(WT_NAME);
+    }
+
+    @Test
+    @SneakyThrows
+    void handleGetWTByName_ThrowsException() {
+        //given
+        when(service.getTemplateByName("Без имени"))
+                .thenThrow(new WorkoutTemplateNotFoundException("Workout template not found by name: Без имени"));
+        //when
+        assertThrows(WorkoutTemplateNotFoundException.class, () -> controller.getTemplateByName("Без имени"));
+        //then
+        verify(service).getTemplateByName("Без имени");
     }
 
 
