@@ -1,5 +1,6 @@
 package io.project.wolfgym.service;
 
+import io.project.wolfgym.customException.ExerciseNotFoundException;
 import io.project.wolfgym.customException.WorkoutTemplateNotFoundException;
 import io.project.wolfgym.dto.workoutTemplate.WorkoutTemplateCreateDTO;
 import io.project.wolfgym.dto.workoutTemplate.WorkoutTemplateDTO;
@@ -22,18 +23,29 @@ public class WorkoutTemplateService {
     private final ExerciseRepository exerciseRepository;
 
     @Transactional
-    public WorkoutTemplateDTO create(WorkoutTemplateCreateDTO createDTO) {
+    public WorkoutTemplateDTO create(WorkoutTemplateCreateDTO createDTO) throws ExerciseNotFoundException {
 
         WorkoutTemplate workoutTemplate = new WorkoutTemplate();
         workoutTemplate.setName(createDTO.getName());
         workoutTemplate.setDescription(createDTO.getDescription());
 
-        // Устанавливаем упражнения через кастомные методы для двусторонней связи
-        if (createDTO.getExercisesIds() != null) {
-            List<Exercise> exercises = exerciseRepository.findAllById(createDTO.getExercisesIds());
-            exercises.forEach(workoutTemplate::addExercise); // Это установит двустороннюю связь
+        List<Long> exerciseIds = createDTO.getExercisesIds();
+        if (exerciseIds.isEmpty() || exerciseIds == null) {
+            throw new IllegalArgumentException("Exercise IDs cannot be null");
         }
 
+        List<Exercise> foundExercises = exerciseRepository.findAllById(exerciseIds);
+        if (exerciseIds.size() != foundExercises.size()) {
+            var foundIds = foundExercises.stream()
+                    .map(Exercise::getId)
+                    .toList();
+            var notFoundExercises = exerciseIds.stream()
+                    .filter(id -> !foundIds.contains(id))
+                    .toList();
+            throw new ExerciseNotFoundException("Упражнения не найдены с ID: " + notFoundExercises);
+        }
+        foundExercises.stream()
+                .forEach(exercise -> workoutTemplate.addExercise(exercise));
         WorkoutTemplate saved = repository.save(workoutTemplate);
         return mapper.map(saved);
     }

@@ -1,5 +1,6 @@
 package io.project.wolfgym.controller;
 
+import io.project.wolfgym.customException.ExerciseNotFoundException;
 import io.project.wolfgym.customException.WorkoutTemplateNotFoundException;
 import io.project.wolfgym.dto.workoutTemplate.WorkoutTemplateCreateDTO;
 import io.project.wolfgym.dto.workoutTemplate.WorkoutTemplateDTO;
@@ -19,7 +20,7 @@ public class WorkoutTemplateController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public WorkoutTemplateDTO create(@RequestBody @Valid WorkoutTemplateCreateDTO createDTO) {
+    public WorkoutTemplateDTO create(@RequestBody @Valid WorkoutTemplateCreateDTO createDTO) throws ExerciseNotFoundException {
         return service.create(createDTO);
     }
 

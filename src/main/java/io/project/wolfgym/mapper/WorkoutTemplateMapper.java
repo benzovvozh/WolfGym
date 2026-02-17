@@ -21,25 +21,11 @@ import java.util.stream.Collectors;
 )
 public abstract class WorkoutTemplateMapper {
     @Autowired
-    private ExerciseRepository exerciseRepository;
-    @Autowired
     private ExerciseMapper exerciseMapper;
-
-    @Mapping(target = "workoutTemplateId", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "exercises", source = "exercisesIds")
-    public abstract WorkoutTemplate map(WorkoutTemplateCreateDTO workoutTemplateCreateDTO);
 
     @Mapping(target = "exercises", source = "exercises", qualifiedByName = "mapExercisesToDTOs")
     public abstract WorkoutTemplateDTO map(WorkoutTemplate workoutTemplate);
 
-    // Метод для преобразования ID → Exercise
-    protected List<Exercise> mapExerciseIdsToExercises(List<Long> exerciseIds) {
-        if (exerciseIds == null || exerciseIds.isEmpty()) {
-            return new ArrayList<>();
-        }
-        return exerciseRepository.findAllById(exerciseIds);
-    }
     @Named("mapExercisesToDTOs")
     protected List<ExerciseDTO> mapExercisesToDTOs(List<Exercise> exercises) {
         if (exercises == null || exercises.isEmpty()) {

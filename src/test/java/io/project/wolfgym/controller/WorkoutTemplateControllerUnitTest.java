@@ -93,6 +93,7 @@ class WorkoutTemplateControllerUnitTest {
     }
 
     @Test
+    @SneakyThrows
     void handleCreateWT_ReturnsOk() {
         //given
         var requestWT = new WorkoutTemplateCreateDTO();
