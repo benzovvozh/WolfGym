@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mapper(
@@ -27,7 +28,7 @@ public abstract class WorkoutTemplateMapper {
     public abstract WorkoutTemplateDTO map(WorkoutTemplate workoutTemplate);
 
     @Named("mapExercisesToDTOs")
-    protected List<ExerciseDTO> mapExercisesToDTOs(List<Exercise> exercises) {
+    protected List<ExerciseDTO> mapExercisesToDTOs(Set<Exercise> exercises) {
         if (exercises == null || exercises.isEmpty()) {
             return new ArrayList<>();
         }

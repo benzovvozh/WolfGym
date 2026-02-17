@@ -10,7 +10,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /*
     Тренировка
@@ -42,7 +44,7 @@ public class WorkoutSession {
 
     // Связь с подходами
     @OneToMany(mappedBy = "workoutSession", cascade = CascadeType.ALL)
-    private List<WorkoutSet> sets = new ArrayList<>();
+    private Set<WorkoutSet> sets = new HashSet<>();
 
     public void addSet(WorkoutSet set) {
         if (set == null){

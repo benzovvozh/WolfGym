@@ -48,13 +48,13 @@ public class WorkoutSessionService {
     }
 
     public List<WorkoutSessionDTO> showAll() {
-        return repository.findAll().stream()
+        return repository.findAllWithSetsAndTemplate().stream()
                 .map(sessionMapper::map)
                 .toList();
     }
 
     public void destroy(Long id) throws WorkoutSessionNotFoundException {
-        if (!repository.existsById(id)){
+        if (!repository.existsById(id)) {
             throw new WorkoutSessionNotFoundException("Cannot delete. Workout session not found by ID: " + id);
         }
         repository.deleteById(id);
@@ -69,6 +69,7 @@ public class WorkoutSessionService {
         List<Long> setIds = updateDTO.getSetsId();
         // получаем все подходы по айди
         List<WorkoutSet> foundSets = setRepository.findAllById(setIds);
+
         // если размер коллекций разный -> какие-то не нашлись
         if (setIds.size() != foundSets.size()) {
             // получаем айди всех найденных подходов
@@ -82,7 +83,9 @@ public class WorkoutSessionService {
             // бросаем исключение со списков ненайденных подходов
             throw new WorkoutSetNotFoundException("Подходы не найдены с ID: " + notFoundSets);
         }
-
+        // добавляем все подходы в сессию
+        foundSets.stream()
+                .forEach(set -> session.addSet(set));
 
         return sessionMapper.map(session);
     }

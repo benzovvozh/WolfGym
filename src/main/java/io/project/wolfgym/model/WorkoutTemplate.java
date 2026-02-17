@@ -8,7 +8,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /*
 Шаблон тренировки
@@ -43,7 +45,7 @@ public class WorkoutTemplate {
             joinColumns = @JoinColumn(name = "workout_template_id"),
             inverseJoinColumns = @JoinColumn(name = "exercise_id")
     )
-    private List<Exercise> exercises = new ArrayList<>();
+    private Set<Exercise> exercises = new HashSet<>();
     // Связь с сессиями
     // список сессий по этой тренировке
     @OneToMany(mappedBy = "template")
