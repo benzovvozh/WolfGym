@@ -3,6 +3,7 @@ package io.project.wolfgym.customException;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -34,6 +35,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(WorkoutSessionNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleWorkoutSessionNotFoundException(WorkoutSessionNotFoundException e) {
         return notFoundResponse(e);
+    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
+        var response = new ErrorResponse(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(response);
+
     }
 
 
