@@ -44,8 +44,15 @@ public class WorkoutSession {
     @OneToMany(mappedBy = "workoutSession", cascade = CascadeType.ALL)
     private List<WorkoutSet> sets = new ArrayList<>();
 
-    public void addSets(WorkoutSet set) {
-        this.sets.add(set);
+    public void addSet(WorkoutSet set) {
+        if (set == null){
+            throw new IllegalArgumentException("WorkoutSet не может быть null");
+        }
+        if (!this.sets.contains(set)){
+            this.sets.add(set);
+            set.setWorkoutSession(this);
+        }
+
     }
 
     public Integer getCalculatedDuration() {

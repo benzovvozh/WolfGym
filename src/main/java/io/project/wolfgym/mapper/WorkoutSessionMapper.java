@@ -25,48 +25,9 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public abstract class WorkoutSessionMapper {
-    @Autowired
-    private WorkoutSetRepository workoutSetRepository;
-    @Autowired
-    private WorkoutTemplateRepository workoutTemplateRepository;
-    @Autowired
-    private WorkoutSetMapper workoutSetMapper;
-
-    @Mapping(target = "template", source = "templateId")
-    public abstract WorkoutSession map(WorkoutSessionCreateDTO createDTO);
 
     // надо подходы маппить в дто
     @Mapping(target = "workoutSetDTOList", source = "sets")
     public abstract WorkoutSessionDTO map(WorkoutSession session);
-
-    @Mapping(target = "sets", source = "setsId")
-    public abstract void update(@MappingTarget WorkoutSession session,WorkoutSessionUpdateDTO updateDTO);
-
-//
-    // Метод для преобразования ID → WorkoutSet
-    protected List<WorkoutSet> mapWorkoutSetIdToWorkoutSet(List<Long> workoutSetIds) {
-
-        if (workoutSetIds == null || workoutSetIds.isEmpty()) {
-            return new ArrayList<>();
-        }
-        return workoutSetRepository.findAllById(workoutSetIds);
-    }
-    // Метод для преобразования WorkoutSet -> WorkoutSetDTO
-    protected List<WorkoutSetDTO> mapWorkoutSetToWorkoutSetDTO(List<WorkoutSet> workoutSets){
-        if (workoutSets == null || workoutSets.isEmpty()) {
-            return new ArrayList<>();
-        }
-        var result = workoutSets.stream()
-                .map(workoutSetMapper::toDTO)
-                .toList();
-        return result;
-    }
-
-    // Метод для преобразования Id шаблона в шаблон
-    protected WorkoutTemplate mapWorkoutTemplateIdToWorkoutTemplate(Long templateId)
-            throws WorkoutTemplateNotFoundException {
-        return workoutTemplateRepository.findById(templateId)
-                .orElseThrow(() -> new WorkoutTemplateNotFoundException("Ошибка в маппере: шаблон не найден"));
-    }
 
 }

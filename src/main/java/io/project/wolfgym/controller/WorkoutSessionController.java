@@ -1,6 +1,8 @@
 package io.project.wolfgym.controller;
 
 import io.project.wolfgym.customException.WorkoutSessionNotFoundException;
+import io.project.wolfgym.customException.WorkoutSetNotFoundException;
+import io.project.wolfgym.customException.WorkoutTemplateNotFoundException;
 import io.project.wolfgym.dto.workoutSession.WorkoutSessionCreateDTO;
 import io.project.wolfgym.dto.workoutSession.WorkoutSessionDTO;
 import io.project.wolfgym.dto.workoutSession.WorkoutSessionUpdateDTO;
@@ -20,7 +22,8 @@ public class WorkoutSessionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public WorkoutSessionDTO create(@RequestBody @Valid WorkoutSessionCreateDTO createDTO) {
+    public WorkoutSessionDTO create(@RequestBody @Valid WorkoutSessionCreateDTO createDTO)
+            throws WorkoutTemplateNotFoundException {
         return service.create(createDTO);
     }
 
@@ -45,7 +48,7 @@ public class WorkoutSessionController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public WorkoutSessionDTO update(@RequestBody @Valid WorkoutSessionUpdateDTO updateDTO)
-            throws WorkoutSessionNotFoundException{
+            throws WorkoutSessionNotFoundException, WorkoutSetNotFoundException {
         return service.update(updateDTO);
     }
 
