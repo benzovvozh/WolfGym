@@ -70,7 +70,10 @@ public class ExerciseService {
                 .toList();
     }
 
-    public void destroy(Long id) {
+    public void destroy(Long id) throws ExerciseNotFoundException {
+        if (!repository.existsById(id)){
+            throw new ExerciseNotFoundException("Cannot delete. Exercise not found by ID: " + id );
+        }
         repository.deleteById(id);
     }
 }

@@ -40,7 +40,7 @@ public class ExerciseController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") Long id){
+    public void delete(@PathVariable("id") Long id) throws ExerciseNotFoundException {
         service.destroy(id);
     }
 

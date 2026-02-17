@@ -53,7 +53,10 @@ public class WorkoutSessionService {
                 .toList();
     }
 
-    public void destroy(Long id) {
+    public void destroy(Long id) throws WorkoutSessionNotFoundException {
+        if (!repository.existsById(id)){
+            throw new WorkoutSessionNotFoundException("Cannot delete. Workout session not found by ID: " + id);
+        }
         repository.deleteById(id);
     }
 

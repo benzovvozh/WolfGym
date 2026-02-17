@@ -60,7 +60,10 @@ public class WorkoutTemplateService {
         return repository.findAll().stream().map(mapper::map).toList();
     }
 
-    public void destroy(Long id) {
+    public void destroy(Long id) throws WorkoutTemplateNotFoundException {
+        if (!repository.existsById(id)){
+            throw new WorkoutTemplateNotFoundException("Cannot delete. Workout template not found by ID: " + id);
+        }
         repository.deleteById(id);
     }
 
