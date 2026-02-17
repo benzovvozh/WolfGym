@@ -57,7 +57,7 @@ public class WorkoutTemplateService {
     }
 
     public List<WorkoutTemplateDTO> showAll() {
-        return repository.findAll().stream().map(mapper::map).toList();
+        return repository.findAllWithExercises().stream().map(mapper::map).toList();
     }
 
     public void destroy(Long id) throws WorkoutTemplateNotFoundException {
@@ -68,7 +68,7 @@ public class WorkoutTemplateService {
     }
 
     public WorkoutTemplateDTO getTemplateByName(String name) throws WorkoutTemplateNotFoundException {
-        var template = repository.findByName(name)
+        var template = repository.findByNameWithExercises(name)
                 .orElseThrow(() -> new WorkoutTemplateNotFoundException("Workout template not found by name: " + name));
         return mapper.map(template);
     }
