@@ -35,11 +35,11 @@ class ExerciseControllerIntegrationTest {
 
     private final String invalidExercise = """
             {
-              "name": "Жим лежа", 
+              "name": "", 
               "description": "Базовое упражнение для грудных мышц",
               "muscleGroup": "CHESTs",
               "videoUrl": "https://www.youtube.com/watch?v=example1",
-              "createdBy": "admin"
+              "createdBy": ""
             }""";
 
 
@@ -76,7 +76,9 @@ class ExerciseControllerIntegrationTest {
         mockMvc.perform(post("/api/exercises")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidExerciseWithMissingName))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Ошибка валидации"))
+                .andExpect(jsonPath("$.errors").isNotEmpty());
     }
 
     @Test
@@ -93,7 +95,9 @@ class ExerciseControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(exerciseWithBlankName))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message")
+                .andExpect(jsonPath("$.message").value("Ошибка валидации"))
+                .andExpect(jsonPath("$.errors").isNotEmpty())
+                .andExpect(jsonPath("$.errors.name")
                         .value("Название упражнения не может быть пустым"));
     }
 
@@ -110,8 +114,10 @@ class ExerciseControllerIntegrationTest {
         mockMvc.perform(post("/api/exercises")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(exerciseWithBlankCreatedBy))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("CreatedBy не может быть пустым"));
+                .andExpect(jsonPath("$.message").value("Ошибка валидации"))
+                .andExpect(jsonPath("$.errors").isNotEmpty())
+                .andExpect(jsonPath("$.errors.createdBy")
+                        .value("CreatedBy не может быть пустым"));
     }
 
     @Test

@@ -50,7 +50,9 @@ class WorkoutTemplateControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidRequest))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Имя не может быть пустым"));
+                .andExpect(jsonPath("$.message").value("Ошибка валидации"))
+                .andExpect(jsonPath("$.errors.name")
+                        .value("Название тренировки не может быть пустым"));
     }
 
     @Test

@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -37,11 +40,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleWorkoutSessionNotFoundException(WorkoutSessionNotFoundException e) {
         return notFoundResponse(e);
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
-        var response = new ErrorResponse(e.getBindingResult().getFieldErrors().stream()
-                .map(FieldError::getDefaultMessage)
-                .findFirst().get());
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        Map<String, String> errors = new HashMap<>();
+        e.getBindingResult().getFieldErrors().stream()
+                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+        var response = new ErrorResponse("Ошибка валидации", errors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(response);
 

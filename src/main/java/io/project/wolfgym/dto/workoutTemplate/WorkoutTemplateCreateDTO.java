@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 public class WorkoutTemplateCreateDTO {
-    @NotBlank(message = "Имя не может быть пустым")
+    @NotBlank(message = "Название тренировки не может быть пустым")
     private String name;
     private String description;
     @NotNull(message = "Список упражнений не может быть null")
