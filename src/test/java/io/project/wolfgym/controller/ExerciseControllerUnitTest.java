@@ -1,6 +1,7 @@
 package io.project.wolfgym.controller;
 
 import io.project.wolfgym.customException.ExerciseNotFoundException;
+import io.project.wolfgym.customException.WorkoutTemplateNotFoundException;
 import io.project.wolfgym.dto.exercise.ExerciseCreateDTO;
 import io.project.wolfgym.dto.exercise.ExerciseDTO;
 import io.project.wolfgym.model.MuscleGroup;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Arrays;
 
@@ -77,31 +79,6 @@ class ExerciseControllerUnitTest {
         verify(service).show(1L);
     }
 
-//    @Test
-//    void handleGetAllExercises_ReturnsOk() {
-//        //given
-//        var exerciseDTO2 = new ExerciseDTO();
-//        exerciseDTO2.setName("Name");
-//        exerciseDTO2.setDescription("Desc");
-//        exerciseDTO2.setMuscleGroup(MuscleGroup.LEGS);
-//
-//        var exercisesList = Arrays.asList(exerciseDTO, exerciseDTO2);
-//        when(service.showAll()).thenReturn(exercisesList);
-//
-//        //when
-//        var result = controller.getExercises(null);
-//
-//        //then
-//        assertThat(result).isNotNull();
-//        assertThat(result).hasSize(2);
-//        assertEquals(result.get(0).getName(), EX_NAME);
-//        assertEquals(result.get(0).getMuscleGroup(), MuscleGroup.CHEST);
-//        assertEquals(result.get(1).getName(), "Name");
-//        assertEquals(result.get(1).getMuscleGroup(), MuscleGroup.LEGS);
-//
-//        verify(service).showAll();
-//    }
-
     @Test
     void handleGetExerciseById_ReturnsNotFound() throws ExerciseNotFoundException {
         //given
@@ -131,6 +108,5 @@ class ExerciseControllerUnitTest {
         assertThrows(ExerciseNotFoundException.class, () -> controller.getExerciseByName("Становая тяга"));
         verify(service).getExerciseByName("Становая тяга");
     }
-
 
 }

@@ -3,6 +3,7 @@ package io.project.wolfgym.customException;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,7 +39,9 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
-        var response = new ErrorResponse(e.getMessage());
+        var response = new ErrorResponse(e.getBindingResult().getFieldErrors().stream()
+                .map(FieldError::getDefaultMessage)
+                .findFirst().get());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(response);
 

@@ -29,14 +29,16 @@ class WorkoutTemplateControllerIntegrationTest {
             {
               "name": "Спина + Бицепс",
               "description": "Силовая тренировка для верхней части тела",
-              "exercisesIds": [1, 2]
+              "exercisesIds": [1, 2],
+              "userId": "1"
             }
             """;
     private final String invalidRequest = """
             {
               "name": null,
               "description": "Силовая тренировка для верхней части тела",
-              "exercisesIds": [1]
+              "exercisesIds": [1],
+              "userId": "1"
             }
             """;
 
@@ -47,8 +49,8 @@ class WorkoutTemplateControllerIntegrationTest {
         mockMvc.perform(post("/api/workout-templates")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidRequest))
-                .andExpect(status().isBadRequest());
-
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Имя не может быть пустым"));
     }
 
     @Test
@@ -111,7 +113,8 @@ class WorkoutTemplateControllerIntegrationTest {
                 {
                   "name": "Для удаления",
                   "description": "Будет удалено",
-                  "exercisesIds": [1, 2]
+                  "exercisesIds": [1, 2],
+                  "userId": "1"
                 }
                 """;
         var response = mockMvc.perform(post("/api/workout-templates")

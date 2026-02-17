@@ -1,6 +1,7 @@
 package io.project.wolfgym.controller;
 
 import com.jayway.jsonpath.JsonPath;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,6 +11,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -27,7 +29,8 @@ class ExerciseControllerIntegrationTest {
               "name": "Жим лежа",
               "description": "Базовое упражнение для грудных мышц", 
               "muscleGroup": "CHEST",
-              "videoUrl": "https://www.youtube.com/watch?v=example1"
+              "videoUrl": "https://www.youtube.com/watch?v=example1",
+              "createdBy": "admin"
             }""";
 
     private final String invalidExercise = """
@@ -35,7 +38,8 @@ class ExerciseControllerIntegrationTest {
               "name": "Жим лежа", 
               "description": "Базовое упражнение для грудных мышц",
               "muscleGroup": "CHESTs",
-              "videoUrl": "https://www.youtube.com/watch?v=example1"
+              "videoUrl": "https://www.youtube.com/watch?v=example1",
+              "createdBy": "admin"
             }""";
 
 
@@ -76,6 +80,41 @@ class ExerciseControllerIntegrationTest {
     }
 
     @Test
+    @SneakyThrows
+    void createExercise_WithInvalidName_ReturnBadRequest() {
+        String exerciseWithBlankName = """
+                {
+                "name": "",
+                "muscleGroup": "CHEST",
+                "createdBy": "admin"
+                }
+                """;
+        mockMvc.perform(post("/api/exercises")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(exerciseWithBlankName))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message")
+                        .value("Название упражнения не может быть пустым"));
+    }
+
+    @Test
+    @SneakyThrows
+    void createExercise_WithInvalidCreatedBy_ReturnsBadRequest() {
+        String exerciseWithBlankCreatedBy = """
+                {
+                "name": "exercise",
+                "muscleGroup": "CHEST",
+                "createdBy": ""
+                }
+                """;
+        mockMvc.perform(post("/api/exercises")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(exerciseWithBlankCreatedBy))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("CreatedBy не может быть пустым"));
+    }
+
+    @Test
     void showExercise_ReturnsOk() throws Exception {
         mockMvc.perform(get("/api/exercises/1"))
                 .andExpect(status().isOk())
@@ -104,7 +143,8 @@ class ExerciseControllerIntegrationTest {
                 {
                   "name": "Упражнение для удаления",
                   "description": "Это упражнение будет удалено",
-                  "muscleGroup": "CHEST"
+                  "muscleGroup": "CHEST",
+                  "createdBy": "admin"
                 }""";
         String response = mockMvc.perform(post("/api/exercises")
                         .contentType(MediaType.APPLICATION_JSON)
