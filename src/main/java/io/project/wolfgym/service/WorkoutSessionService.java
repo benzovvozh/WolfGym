@@ -62,9 +62,11 @@ public class WorkoutSessionService {
 
     public WorkoutSessionDTO update(WorkoutSessionUpdateDTO updateDTO) throws
             WorkoutSessionNotFoundException, WorkoutSetNotFoundException {
+
         WorkoutSession session = repository.findById(updateDTO.getId())
                 .orElseThrow(() ->
                         new WorkoutSessionNotFoundException("Session with  " + updateDTO.getId() + " not found"));
+
         // получаем все айди подходов
         List<Long> setIds = updateDTO.getSetsId();
         // получаем все подходы по айди
@@ -86,7 +88,7 @@ public class WorkoutSessionService {
         // добавляем все подходы в сессию
         foundSets.stream()
                 .forEach(set -> session.addSet(set));
-
+        repository.save(session);
         return sessionMapper.map(session);
     }
 

@@ -25,17 +25,18 @@ public class WorkoutSetService {
     public WorkoutSetDTO createWorkoutSet(WorkoutSetCreateDTO createDTO) throws WorkoutSessionNotFoundException,
             ExerciseNotFoundException {
 
-        WorkoutSet workoutSet = workoutSetMapper.toEntity(createDTO);
-
         var session = workoutSessionRepository.findById(createDTO.getWorkoutSessionId())
                 .orElseThrow(() -> new WorkoutSessionNotFoundException(
                         "Session not found with id: " + createDTO.getWorkoutSessionId()));
-        workoutSet.setWorkoutSession(session);
+
 
         var exercise = exerciseRepository.findById(createDTO.getExerciseId())
                 .orElseThrow(() -> new ExerciseNotFoundException(
                         "Exercise not found with id: " + createDTO.getExerciseId()
                 ));
+
+        WorkoutSet workoutSet = workoutSetMapper.toEntity(createDTO);
+        workoutSet.setWorkoutSession(session);
         workoutSet.setExercise(exercise);
 
         WorkoutSet saved = workoutSetRepository.save(workoutSet);
