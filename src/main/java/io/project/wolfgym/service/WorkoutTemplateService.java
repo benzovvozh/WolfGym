@@ -30,7 +30,7 @@ public class WorkoutTemplateService {
         workoutTemplate.setDescription(createDTO.getDescription());
 
         List<Long> exerciseIds = createDTO.getExercisesIds();
-        if (exerciseIds.isEmpty() || exerciseIds == null) {
+        if (exerciseIds == null || exerciseIds.isEmpty()) {
             throw new IllegalArgumentException("Exercise IDs cannot be null");
         }
 
@@ -51,7 +51,7 @@ public class WorkoutTemplateService {
     }
 
     public WorkoutTemplateDTO show(Long id) throws WorkoutTemplateNotFoundException {
-        var workoutTemplate = repository.findById(id)
+        var workoutTemplate = repository.findByIdWithExercises(id)
                 .orElseThrow(() -> new WorkoutTemplateNotFoundException("Workout template not found"));
         return mapper.map(workoutTemplate);
     }

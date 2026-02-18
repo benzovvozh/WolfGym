@@ -19,4 +19,7 @@ public interface WorkoutTemplateRepository extends JpaRepository<WorkoutTemplate
 
     @Query("select distinct wt from WorkoutTemplate wt left join fetch wt.exercises")
     List<WorkoutTemplate> findAllWithExercises();
+
+    @Query("select  wt from WorkoutTemplate wt left join fetch wt.exercises where wt.workoutTemplateId = :id")
+    Optional<WorkoutTemplate> findByIdWithExercises(@Param("id") Long id);
 }
