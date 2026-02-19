@@ -65,12 +65,12 @@ public class WorkoutSessionService {
     }
 
     @Transactional
-    public WorkoutSessionDTO update(WorkoutSessionUpdateDTO updateDTO) throws
+    public WorkoutSessionDTO update(WorkoutSessionUpdateDTO updateDTO, Long id) throws
             WorkoutSessionNotFoundException, WorkoutSetNotFoundException {
 
-        WorkoutSession session = repository.findById(updateDTO.getId())
+        WorkoutSession session = repository.findById(id)
                 .orElseThrow(() ->
-                        new WorkoutSessionNotFoundException("Session with  " + updateDTO.getId() + " not found"));
+                        new WorkoutSessionNotFoundException("Session with  " + id + " not found"));
 
         // получаем все айди подходов
         List<Long> setIds = updateDTO.getSetsId();
@@ -85,7 +85,7 @@ public class WorkoutSessionService {
                     .toList();
             // получаем айди всех ненайденных подходов
             var notFoundSets = setIds.stream()
-                    .filter(id -> !foundIds.contains(id))
+                    .filter(setId -> !foundIds.contains(setId))
                     .toList();
             // бросаем исключение со списков ненайденных подходов
             throw new WorkoutSetNotFoundException("Подходы не найдены с ID: " + notFoundSets);

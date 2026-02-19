@@ -47,9 +47,9 @@ public class WorkoutSessionController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public WorkoutSessionDTO update(@RequestBody @Valid WorkoutSessionUpdateDTO updateDTO)
+    public WorkoutSessionDTO update(@RequestBody @Valid WorkoutSessionUpdateDTO updateDTO, @PathVariable("id") Long id)
             throws WorkoutSessionNotFoundException, WorkoutSetNotFoundException {
-        return service.update(updateDTO);
+        return service.update(updateDTO, id);
     }
 
     @PatchMapping("/{id}/endSession")
