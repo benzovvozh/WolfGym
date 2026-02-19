@@ -126,7 +126,6 @@ public class WorkoutSetServiceUnitTest {
     void createSet_WithInvalidExerciseId_ThrowsException() {
         //given
         createDTO.setExerciseId(999L);
-        when(workoutSetMapper.toEntity(createDTO)).thenReturn(workoutSet);
         when(workoutSessionRepository.findById(1L)).thenReturn(Optional.of(workoutSession));
         when(exerciseRepository.findById(999L)).thenReturn(Optional.empty());
         //when

@@ -31,12 +31,6 @@ public class ExerciseController {
     public ExerciseDTO show(@PathVariable("id") Long id) throws ExerciseNotFoundException {
         return service.show(id);
     }
-//
-//    @GetMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<ExerciseDTO> showAll() {
-//        return service.showAll();
-//    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
