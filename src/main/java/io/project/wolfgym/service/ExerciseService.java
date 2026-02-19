@@ -12,16 +12,19 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ExerciseService {
 
     private final ExerciseMapper mapper;
     private final ExerciseRepository repository;
 
+    @Transactional
     public ExerciseDTO create(ExerciseCreateDTO createDTO) {
         Exercise exercise = mapper.map(createDTO);
         repository.save(exercise);
@@ -70,6 +73,7 @@ public class ExerciseService {
                 .toList();
     }
 
+    @Transactional
     public void destroy(Long id) throws ExerciseNotFoundException {
         if (!repository.existsById(id)){
             throw new ExerciseNotFoundException("Cannot delete. Exercise not found by ID: " + id );

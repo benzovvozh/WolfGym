@@ -15,6 +15,7 @@ import io.project.wolfgym.repository.WorkoutSetRepository;
 import io.project.wolfgym.repository.WorkoutTemplateRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -23,12 +24,14 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class WorkoutSessionService {
     private final WorkoutSessionRepository repository;
     private final WorkoutSessionMapper sessionMapper;
     private final WorkoutTemplateRepository templateRepository;
     private final WorkoutSetRepository setRepository;
 
+    @Transactional
     public WorkoutSessionDTO create(WorkoutSessionCreateDTO createDTO) throws WorkoutTemplateNotFoundException {
         var template = templateRepository.findById(createDTO.getTemplateId())
                 .orElseThrow(() ->
@@ -53,6 +56,7 @@ public class WorkoutSessionService {
                 .toList();
     }
 
+    @Transactional
     public void destroy(Long id) throws WorkoutSessionNotFoundException {
         if (!repository.existsById(id)) {
             throw new WorkoutSessionNotFoundException("Cannot delete. Workout session not found by ID: " + id);
@@ -60,6 +64,7 @@ public class WorkoutSessionService {
         repository.deleteById(id);
     }
 
+    @Transactional
     public WorkoutSessionDTO update(WorkoutSessionUpdateDTO updateDTO) throws
             WorkoutSessionNotFoundException, WorkoutSetNotFoundException {
 
@@ -92,6 +97,7 @@ public class WorkoutSessionService {
         return sessionMapper.map(session);
     }
 
+    @Transactional
     public WorkoutSessionDTO endSession(Long id) throws WorkoutSessionNotFoundException {
         var session = repository.findById(id).orElseThrow(() ->
                 new WorkoutSessionNotFoundException("Session with id " + id + " not found"));
