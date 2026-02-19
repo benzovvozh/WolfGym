@@ -115,7 +115,7 @@ class WorkoutTemplateControllerIntegrationTest {
                 {
                   "name": "Для удаления",
                   "description": "Будет удалено",
-                  "exercisesIds": [1, 2],
+                  "exercisesIds": [1],
                   "userId": "1"
                 }
                 """;
@@ -127,10 +127,21 @@ class WorkoutTemplateControllerIntegrationTest {
                 .getResponse()
                 .getContentAsString();
         Long templateId = JsonPath.parse(response).read("$.workoutTemplateId", Long.class);
+        mockMvc.perform(delete("/api/workout-templates/" + templateId + "/delete-exercise"))
+                .andExpect(status().isNoContent());
         mockMvc.perform(delete("/api/workout-templates/" + templateId))
                 .andExpect(status().isNoContent());
         mockMvc.perform(get("/api/workout-templates/" + templateId))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Order(6)
+    void deleteWorkoutTemplate_ReturnsConflict() throws Exception {
+        mockMvc.perform(delete("/api/workout-templates/1"))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message")
+                        .value("Cannot delete template with existing workout sessions"));
     }
 
 }
