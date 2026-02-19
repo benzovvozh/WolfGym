@@ -17,6 +17,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(response);
     }
+    @ExceptionHandler(WorkoutTemplateInUseException.class)
+    public ResponseEntity<ErrorResponse> handleWorkoutTemplateInUseException(WorkoutTemplateInUseException e){
+        var response = new ErrorResponse(e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(response);
+    }
 
     @ExceptionHandler(ExerciseNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleExerciseNotFoundException(ExerciseNotFoundException e) {

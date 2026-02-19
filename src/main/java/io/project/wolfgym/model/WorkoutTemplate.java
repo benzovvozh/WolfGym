@@ -61,6 +61,16 @@ public class WorkoutTemplate {
         exercise.getWorkoutTemplates().remove(this);
     }
 
+    public void removeAllExercises() {
+        this.exercises.stream()
+                .forEach(exercise -> exercise.removeWorkoutTemplate(this));
+        this.exercises.clear();
+    }
+    public void removeAllSessions(){
+        this.sessions.stream()
+                .forEach(session -> session.setTemplate(null));
+        this.sessions.clear();
+    }
 
 
 }

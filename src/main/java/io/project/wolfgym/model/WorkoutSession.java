@@ -56,6 +56,15 @@ public class WorkoutSession {
         }
 
     }
+    public void  removeSet(WorkoutSet set){
+        if (set == null){
+            throw new IllegalArgumentException("WorkoutSet не может быть null");
+        }
+        if (this.sets.contains(set)){
+            this.sets.remove(set);
+        }
+
+    }
 
     public Integer getCalculatedDuration() {
         if (startTime == null || endTime == null) {

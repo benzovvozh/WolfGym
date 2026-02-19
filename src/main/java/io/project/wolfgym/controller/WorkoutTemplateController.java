@@ -1,6 +1,7 @@
 package io.project.wolfgym.controller;
 
 import io.project.wolfgym.customException.ExerciseNotFoundException;
+import io.project.wolfgym.customException.WorkoutTemplateInUseException;
 import io.project.wolfgym.customException.WorkoutTemplateNotFoundException;
 import io.project.wolfgym.dto.workoutTemplate.WorkoutTemplateCreateDTO;
 import io.project.wolfgym.dto.workoutTemplate.WorkoutTemplateDTO;
@@ -32,9 +33,23 @@ public class WorkoutTemplateController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") Long id) throws WorkoutTemplateNotFoundException {
+    public void delete(@PathVariable("id") Long id) throws WorkoutTemplateNotFoundException,
+            WorkoutTemplateInUseException {
         service.destroy(id);
     }
+
+    @DeleteMapping("/{templateId}/delete-exercise/{exerciseId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteExercise(@PathVariable("templateId") Long templateId, @PathVariable("exerciseId") Long exerciseId)
+            throws WorkoutTemplateNotFoundException, ExerciseNotFoundException {
+        service.removeExercise(templateId, exerciseId);
+    }
+    @DeleteMapping("/{id}/delete-exercise")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAllExercises(@PathVariable("id") Long id) throws WorkoutTemplateNotFoundException {
+        service.removeAllExercises(id);
+    }
+
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

@@ -1,6 +1,7 @@
 package io.project.wolfgym.service;
 
 import io.project.wolfgym.customException.ExerciseNotFoundException;
+import io.project.wolfgym.customException.WorkoutTemplateInUseException;
 import io.project.wolfgym.customException.WorkoutTemplateNotFoundException;
 import io.project.wolfgym.dto.workoutTemplate.WorkoutTemplateCreateDTO;
 import io.project.wolfgym.dto.workoutTemplate.WorkoutTemplateDTO;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class WorkoutTemplateService {
     private final WorkoutTemplateMapper mapper;
     private final WorkoutTemplateRepository repository;
@@ -60,11 +62,40 @@ public class WorkoutTemplateService {
         return repository.findAllWithExercises().stream().map(mapper::map).toList();
     }
 
-    public void destroy(Long id) throws WorkoutTemplateNotFoundException {
-        if (!repository.existsById(id)){
-            throw new WorkoutTemplateNotFoundException("Cannot delete. Workout template not found by ID: " + id);
+    @Transactional
+    public void destroy(Long id) throws WorkoutTemplateNotFoundException, WorkoutTemplateInUseException {
+        WorkoutTemplate workoutTemplate = repository.findByIdWithExercises(id)
+                .orElseThrow(() ->
+                        new WorkoutTemplateNotFoundException("Cannot delete. Workout template not found by ID: " + id));
+
+        if (!workoutTemplate.getExercises().isEmpty()) {
+            throw new WorkoutTemplateInUseException("Cannot delete template with existing workout sessions");
         }
-        repository.deleteById(id);
+        workoutTemplate.removeAllSessions();
+        repository.delete(workoutTemplate);
+    }
+
+    @Transactional
+    public void removeExercise(Long templateId, Long exerciseId) throws WorkoutTemplateNotFoundException,
+            ExerciseNotFoundException {
+        WorkoutTemplate workoutTemplate = repository.findByIdWithExercises(templateId)
+                .orElseThrow(() ->
+                        new WorkoutTemplateNotFoundException("Cannot delete. Workout template not found by ID: " +
+                                                             templateId));
+        Exercise exercise = exerciseRepository.findById(exerciseId)
+                .orElseThrow(() -> new ExerciseNotFoundException("Exercise not found with id: " + exerciseId));
+        workoutTemplate.removeExercise(exercise);
+        repository.save(workoutTemplate);
+    }
+
+    @Transactional
+    public void removeAllExercises(Long templateId) throws WorkoutTemplateNotFoundException {
+        WorkoutTemplate workoutTemplate = repository.findByIdWithExercises(templateId)
+                .orElseThrow(() ->
+                        new WorkoutTemplateNotFoundException("Workout template not found by ID: " +
+                                                             templateId));
+        workoutTemplate.removeAllExercises();
+        repository.save(workoutTemplate);
     }
 
     public WorkoutTemplateDTO getTemplateByName(String name) throws WorkoutTemplateNotFoundException {
