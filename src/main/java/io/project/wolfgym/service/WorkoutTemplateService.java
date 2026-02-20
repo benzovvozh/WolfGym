@@ -68,7 +68,7 @@ public class WorkoutTemplateService {
                 .orElseThrow(() ->
                         new WorkoutTemplateNotFoundException("Cannot delete. Workout template not found by ID: " + id));
 
-        if (!workoutTemplate.getExercises().isEmpty()) {
+        if (!workoutTemplate.getSessions().isEmpty()) {
             throw new WorkoutTemplateInUseException("Cannot delete template with existing workout sessions");
         }
         workoutTemplate.removeAllSessions();
