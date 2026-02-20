@@ -47,7 +47,7 @@ public class WorkoutTemplateService {
             throw new ExerciseNotFoundException("Упражнения не найдены с ID: " + notFoundExercises);
         }
         foundExercises.stream()
-                .forEach(exercise -> workoutTemplate.addExercise(exercise));
+                .forEach(workoutTemplate::addExercise);
         WorkoutTemplate saved = repository.save(workoutTemplate);
         return mapper.map(saved);
     }
